@@ -319,7 +319,6 @@ void ZCollector::gc()
   Dir::Entry entry;
 
   BundleCollector collector;
-  collector.indexModified = true;
   collector.bundlesPath = getBundlesPath();
   collector.chunkStorageReader = &this->chunkStorageReader;
   collector.chunkStorageWriter = &chunkStorageWriter;
@@ -349,7 +348,7 @@ void ZCollector::gc()
 
   verbosePrintf( "Checking bundles...\n" );
 
-  chunkIndex.loadIndex( collector );
+  chunkIndex.loadIndex( collector, true );
 
   collector.commit();
 

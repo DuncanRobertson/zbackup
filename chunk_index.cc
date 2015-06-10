@@ -23,7 +23,7 @@ bool ChunkIndex::Chain::equalsTo( ChunkId const & id )
   return memcmp( cryptoHash, id.cryptoHash, sizeof( cryptoHash ) ) == 0;
 }
 
-void ChunkIndex::loadIndex( IndexProcessor & ip )
+void ChunkIndex::loadIndex( IndexProcessor & ip, bool gc )
 {
   Dir::Listing lst( indexPath );
 
@@ -39,7 +39,7 @@ void ChunkIndex::loadIndex( IndexProcessor & ip )
       string indexFn = Dir::addPath( indexPath, entry.getFileName() );
       IndexFile::Reader reader( key, indexFn );
 
-      ip.startIndex( indexFn );
+      ip.startIndex( indexFn, gc );
 
       BundleInfo info;
       Bundle::Id bundleId;
@@ -78,7 +78,7 @@ void ChunkIndex::loadIndex( IndexProcessor & ip )
   verbosePrintf( "Index loaded.\n" );
 }
 
-void ChunkIndex::startIndex( string const & )
+void ChunkIndex::startIndex( string const &, bool )
 {
 }
 
@@ -106,7 +106,7 @@ ChunkIndex::ChunkIndex( EncryptionKey const & key, TmpMgr & tmpMgr,
   lastBundleId( NULL )
 {
   if ( !prohibitChunkIndexLoading )
-    loadIndex( *this );
+    loadIndex( *this, false );
   dPrintf( "%s for %s is instantiated and initialized, hasKey: %s\n",
       __CLASS, indexPath.c_str(), key.hasKey() ? "true" : "false" );
 }

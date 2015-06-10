@@ -16,9 +16,14 @@
 
 using std::string;
 
-void BundleCollector::startIndex( string const & indexFn )
+void BundleCollector::startIndex( string const & indexFn, bool gc)
 {
-  indexModified = false;
+  if ( gc ) {
+     indexModified = true;
+  }
+  else {
+     indexModified = false;
+  }
   indexTotalChunks = indexUsedChunks = 0;
   indexModifiedBundles = indexKeptBundles = indexRemovedBundles = 0;
 }
